@@ -135,14 +135,22 @@ export default function ChatContainer() {
         });
 
         // Only process extraction data if confidence is high enough and it's meaningful
-        if (confidence > 0.85) {
+        if (confidence > 0.7) {
           // Update conversation state with extracted data
           updateCollectedDataFromExtraction(extracted);
-        } else if (confidence > 0.75) {
-          // For medium confidence, update data but don't show feedback message
+          console.log(
+            "Updated conversation state with extracted data:",
+            extracted
+          );
+        } else if (confidence > 0.6) {
+          // For medium confidence, update data but log it as uncertain
           updateCollectedDataFromExtraction(extracted);
+          console.log(
+            "Updated conversation state with uncertain data:",
+            extracted
+          );
         }
-        // For low confidence (< 0.75), ignore the extraction entirely
+        // For low confidence (< 0.6), ignore the extraction entirely
       }
 
       // Add AI response

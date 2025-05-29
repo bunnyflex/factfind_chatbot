@@ -117,12 +117,20 @@ export const ukInsuranceExtractors: ExtractorConfig = {
       /\b(no|nope|n|false|incorrect|not really|negative|nah|never)\b/i,
       /\b(i do have|i have children|i have kids|i have dependents)\b/i,
       /\b(i don't have|i haven't got|no children|no kids|no dependents|none|zero|don't have any|haven't got any|childless|no family)\b/i,
+      /\b(single|i am single|i'm single)\b/i,
     ],
     validate: (value: string) => value.length > 0,
     format: (value: string, fullMatch?: string) => {
       const text = (fullMatch || value).toLowerCase();
       const positivePattern =
         /\b(yes|yeah|yep|y|true|correct|indeed|absolutely|definitely|of course|sure|i do have|i have children|i have kids|i have dependents)\b/i;
+
+      // Special case: if someone says "I am single" in response to dependents question,
+      // we infer they likely don't have dependents (but with lower confidence)
+      if (/\b(single|i am single|i'm single)\b/i.test(text)) {
+        return false; // Infer no dependents for single people
+      }
+
       return positivePattern.test(text);
     },
     confidence: (match: string) => {
@@ -137,6 +145,8 @@ export const ukInsuranceExtractors: ExtractorConfig = {
         )
       )
         return 0.9;
+      // Lower confidence for contextual inference from marital status
+      if (/\b(single|i am single|i'm single)\b/i.test(match)) return 0.75;
       if (/\b(yeah|yep|sure)\b/i.test(match)) return 0.8;
       // Lower confidence for ambiguous matches
       return 0.6;

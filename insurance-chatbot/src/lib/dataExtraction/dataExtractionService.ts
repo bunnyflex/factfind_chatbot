@@ -397,6 +397,51 @@ export class DataExtractionService {
       }
     }
 
+    // **NEW: Context-aware extraction for indirect answers**
+    // If someone answers with marital status when asked about dependents,
+    // we should also try to extract dependents information
+    const lastAssistantMessage =
+      context.conversationHistory?.slice(-2, -1)[0] || "";
+
+    // Check if the last question was about dependents but user answered with marital status
+    if (
+      /\b(dependents|children|kids)\b/i.test(lastAssistantMessage) &&
+      /\b(single|married|divorced|widowed|separated)\b/i.test(cleanMessage)
+    ) {
+      // Add dependents mapping since they're answering a dependents question
+      const dependentsMapping = questionFieldMappings.find(
+        (m) => m.dataField === "hasDependents"
+      );
+      if (
+        dependentsMapping &&
+        !relevantMappings.some((m) => m.dataField === "hasDependents")
+      ) {
+        relevantMappings.push(dependentsMapping);
+      }
+
+      // For single people, we can reasonably infer they likely don't have dependents
+      // But we'll let the boolean extractor handle this logic
+    }
+
+    // Check if the last question was about marital status but user answered about dependents
+    if (
+      /\b(married|single|marital|relationship)\b/i.test(lastAssistantMessage) &&
+      /\b(children|kids|dependents|no children|no kids|no dependents)\b/i.test(
+        cleanMessage
+      )
+    ) {
+      // Add marital status mapping since they might be implying marital status
+      const maritalMapping = questionFieldMappings.find(
+        (m) => m.dataField === "maritalStatus"
+      );
+      if (
+        maritalMapping &&
+        !relevantMappings.some((m) => m.dataField === "maritalStatus")
+      ) {
+        relevantMappings.push(maritalMapping);
+      }
+    }
+
     // If still no relevant mappings found, return empty array to avoid false positives
     return relevantMappings;
   }
