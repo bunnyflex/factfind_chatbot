@@ -118,27 +118,64 @@ COLLECTED DATA: ${JSON.stringify(collectedData, null, 2)}
 TASK: Give personalized insurance recommendations based on their information. Be specific and helpful. Keep it under 100 words and offer to answer questions.`;
   }
 
-  // Analyze recent conversation to avoid repetition
-  const recentTopics = recentMessages
-    .filter((m) => m.role === "assistant")
+  // Enhanced repetition detection - check recent conversation for topics already covered
+  const recentConversation = recentMessages
     .map((m) => m.content.toLowerCase())
     .join(" ");
 
+  // Track what topics have been recently discussed
+  const recentlyDiscussedTopics = new Set<string>();
+
+  // Check for dependents discussion
+  if (
+    recentConversation.includes("dependents") ||
+    recentConversation.includes("children") ||
+    recentConversation.includes("kids")
+  ) {
+    recentlyDiscussedTopics.add("dependents");
+  }
+
+  // Check for employment discussion
+  if (
+    recentConversation.includes("employment") ||
+    recentConversation.includes("work") ||
+    recentConversation.includes("job") ||
+    recentConversation.includes("employed")
+  ) {
+    recentlyDiscussedTopics.add("employment");
+  }
+
+  // Check for marital status discussion
+  if (
+    recentConversation.includes("married") ||
+    recentConversation.includes("single") ||
+    recentConversation.includes("relationship") ||
+    recentConversation.includes("marital")
+  ) {
+    recentlyDiscussedTopics.add("marital status");
+  }
+
+  // Check for UK residency discussion
+  if (
+    recentConversation.includes("uk") ||
+    recentConversation.includes("resident") ||
+    recentConversation.includes("britain") ||
+    recentConversation.includes("british")
+  ) {
+    recentlyDiscussedTopics.add("UK residency");
+  }
+
   // Smart next question logic
   if (unknownInfo.length > 0) {
-    const nextItem = unknownInfo[0];
+    // Find the next logical question that we haven't recently discussed
+    let nextQuestion = unknownInfo.find(
+      (item) => !recentlyDiscussedTopics.has(item)
+    );
 
-    // Check if we just asked about this topic
-    const justAskedAbout = (topic: string) => {
-      return (
-        lastAssistantMessage &&
-        lastAssistantMessage.content.toLowerCase().includes(topic.toLowerCase())
-      );
-    };
-
-    // Find the next logical question that we haven't just asked
-    let nextQuestion =
-      unknownInfo.find((item) => !justAskedAbout(item)) || unknownInfo[0];
+    // If all remaining questions were recently discussed, pick the first unknown
+    if (!nextQuestion) {
+      nextQuestion = unknownInfo[0];
+    }
 
     switch (nextQuestion) {
       case "UK residency":
@@ -219,27 +256,31 @@ CURRENT PROGRESS: ${progressPercentage}% complete${contextInfo}
 NEXT FOCUS: ${nextFocus}
 CONVERSATION TONE: ${conversationTone}${recentContext}
 
-CRITICAL RULES:
-1. NEVER repeat questions about information you already know
-2. Always acknowledge their previous answer before asking the next question
-3. Be natural and conversational - avoid formal language
-4. Reference specific details they've shared to show you're listening
-5. If they seem to have answered something, move on to the next topic
-6. Don't ask about dependents details if they don't have dependents
-7. Don't ask about occupation if they're unemployed/retired
+CRITICAL ANTI-REPETITION RULES:
+1. NEVER ask about topics that have been discussed in recent messages
+2. If someone says "No, I don't have dependents" - NEVER ask about dependents again
+3. If someone answers about employment - move to the next topic immediately
+4. If someone answers about marital status - acknowledge and move on
+5. Always check the KNOWN INFORMATION before asking any question
+6. If a topic appears in RECENT CONVERSATION, skip it completely
+7. When someone gives a clear answer, acknowledge it and move to the next unknown topic
 
 CONVERSATION FLOW:
 - Start by acknowledging what they just told you
 - Make a brief positive comment about their answer
-- Transition naturally to the next question
+- Transition naturally to the next UNASKED question
 - Keep it feeling like a friendly chat, not an interrogation
+- NEVER repeat questions about information you already have
 
 EXAMPLE RESPONSES:
 ❌ "Thank you for that information. Could you please tell me your marital status?"
 ✅ "Brilliant! So you're all sorted with UK residency. Are you married, single, or in a relationship?"
 
-❌ Asking about UK residency when they already told you they're a UK resident
-✅ "Perfect! Since you're a UK resident, let's talk about your family situation..."
+❌ Asking about dependents when they already said "No, I don't have any dependents"
+✅ "Perfect! Since you don't have dependents, let's talk about your work situation..."
 
-Remember: This should feel like a natural conversation with a friendly advisor, not a boring form-filling exercise!`;
+❌ Asking the same question multiple times
+✅ Moving smoothly to the next unknown topic after getting an answer
+
+Remember: This should feel like a natural conversation with a friendly advisor who LISTENS and REMEMBERS what you've already told them!`;
 }

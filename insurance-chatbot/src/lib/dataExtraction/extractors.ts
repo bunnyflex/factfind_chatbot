@@ -116,7 +116,7 @@ export const ukInsuranceExtractors: ExtractorConfig = {
     alternatePatterns: [
       /\b(no|nope|n|false|incorrect|not really|negative|nah|never)\b/i,
       /\b(i do have|i have children|i have kids|i have dependents)\b/i,
-      /\b(i don't have|i haven't got|no children|no kids|no dependents|none|zero)\b/i,
+      /\b(i don't have|i haven't got|no children|no kids|no dependents|none|zero|don't have any|haven't got any|childless|no family)\b/i,
     ],
     validate: (value: string) => value.length > 0,
     format: (value: string, fullMatch?: string) => {
@@ -131,7 +131,12 @@ export const ukInsuranceExtractors: ExtractorConfig = {
       if (/\b(no|never|none)\b/i.test(match)) return 0.95;
       if (/\b(i have children|i have kids|i have dependents)\b/i.test(match))
         return 0.9;
-      if (/\b(no children|no kids|no dependents)\b/i.test(match)) return 0.9;
+      if (
+        /\b(no children|no kids|no dependents|don't have any|haven't got any|childless)\b/i.test(
+          match
+        )
+      )
+        return 0.9;
       if (/\b(yeah|yep|sure)\b/i.test(match)) return 0.8;
       // Lower confidence for ambiguous matches
       return 0.6;

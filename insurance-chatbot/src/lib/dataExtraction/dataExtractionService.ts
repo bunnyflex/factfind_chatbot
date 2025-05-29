@@ -299,9 +299,9 @@ export class DataExtractionService {
       if (maritalMapping) relevantMappings.push(maritalMapping);
     }
 
-    // Dependents keywords
+    // Dependents keywords - include both positive and negative responses
     if (
-      /\b(children|kids|dependents|child|kid|dependent|family|son|daughter|have children|have kids)\b/i.test(
+      /\b(children|kids|dependents|child|kid|dependent|family|son|daughter|have children|have kids|no children|no kids|no dependents|don't have children|don't have kids|don't have dependents|haven't got children|haven't got kids|no family|childless)\b/i.test(
         cleanMessage
       )
     ) {
