@@ -133,8 +133,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               </h1>
 
               <p className="text-gray-600 mb-6">
-                We're having trouble displaying this part of the application.
-                This error has been logged and we'll look into it.
+                We&apos;re having trouble displaying this part of the
+                application. This error has been logged and we&apos;ll look into
+                it.
               </p>
 
               {this.props.showDetails && this.state.error && (

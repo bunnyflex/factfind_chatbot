@@ -10,11 +10,19 @@ import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { useConversation } from "@/contexts/ConversationContext";
 import { generateSystemPrompt } from "@/lib/prompts/systemPrompt";
 
+interface QuickReply {
+  text: string;
+  value: string;
+  emoji?: string;
+}
+
 export default function ChatContainer() {
   const { state, addMessage, updateData } = useConversation();
   const [isTyping, setIsTyping] = useState(false);
   const [showQuickReplies, setShowQuickReplies] = useState(false);
-  const [currentQuickReplies, setCurrentQuickReplies] = useState<any[]>([]);
+  const [currentQuickReplies, setCurrentQuickReplies] = useState<QuickReply[]>(
+    []
+  );
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages are added
@@ -46,7 +54,7 @@ export default function ChatContainer() {
 
   // Helper function to update collected data with extracted information
   const updateCollectedDataFromExtraction = (
-    extractedData: Record<string, any>
+    extractedData: Record<string, string | number | boolean>
   ) => {
     Object.entries(extractedData).forEach(([field, value]) => {
       // Map extracted fields to the correct data categories

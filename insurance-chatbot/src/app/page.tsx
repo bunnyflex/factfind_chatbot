@@ -1,5 +1,4 @@
 import { ChatContainer } from "@/components/chat";
-import { ProgressIndicator } from "@/components/ProgressIndicator";
 
 export default function Home() {
   return (

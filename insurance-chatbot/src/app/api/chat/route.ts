@@ -88,9 +88,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use the messages as provided (system prompt should be included from client)
-    const openaiMessages = messages;
-
     // **NEW: Smart Data Extraction**
     let extractionResult = null;
     let extractedData = {};
@@ -106,7 +103,9 @@ export async function POST(request: NextRequest) {
           currentQuestion: body.conversationState?.currentQuestion || "",
           previousAnswers: body.conversationState?.collectedData || {},
           conversationHistory:
-            body.conversationState?.messages?.map((m: any) => m.content) || [],
+            body.conversationState?.messages?.map(
+              (m: { content: string }) => m.content
+            ) || [],
         }
       );
 
