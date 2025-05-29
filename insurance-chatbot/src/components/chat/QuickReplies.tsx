@@ -252,16 +252,21 @@ export function getQuickRepliesForMessage(message: string): QuickReply[] {
     return QUICK_REPLIES.ukResident;
   }
 
-  // Marital status
+  // Employment - Check this BEFORE marital status to avoid conflicts
   if (
-    lowerMessage.includes("marital status") ||
-    lowerMessage.includes("married") ||
-    lowerMessage.includes("single")
+    lowerMessage.includes("employment") ||
+    lowerMessage.includes("work") ||
+    lowerMessage.includes("job") ||
+    lowerMessage.includes("employed") ||
+    lowerMessage.includes("self-employed") ||
+    lowerMessage.includes("work situation") ||
+    lowerMessage.includes("looking for work") ||
+    lowerMessage.includes("currently employed")
   ) {
-    return QUICK_REPLIES.maritalStatus;
+    return QUICK_REPLIES.employmentStatus;
   }
 
-  // Dependents
+  // Dependents - Check before marital status since they're related
   if (
     lowerMessage.includes("dependents") ||
     lowerMessage.includes("children") ||
@@ -273,13 +278,14 @@ export function getQuickRepliesForMessage(message: string): QuickReply[] {
     return QUICK_REPLIES.hasDependents;
   }
 
-  // Employment
+  // Marital status - Check after employment and dependents
   if (
-    lowerMessage.includes("employment") ||
-    lowerMessage.includes("work") ||
-    lowerMessage.includes("job")
+    lowerMessage.includes("marital status") ||
+    lowerMessage.includes("relationship status") ||
+    (lowerMessage.includes("married") && !lowerMessage.includes("work")) ||
+    (lowerMessage.includes("single") && !lowerMessage.includes("work"))
   ) {
-    return QUICK_REPLIES.employmentStatus;
+    return QUICK_REPLIES.maritalStatus;
   }
 
   // Smoking
