@@ -1,0 +1,295 @@
+# Product Requirements Document (PRD)
+## AI-Powered Insurance Data Collection Chatbot - Phase 1
+
+---
+
+### **1. Product Overview**
+
+**Product Name:** Insurance Advisor AI Chatbot  
+**Version:** 1.0 (Phase 1)  
+**Target Release:** 4-6 weeks  
+**Product Type:** Web-based AI Chatbot (Serverless)  
+
+**One-Line Summary:**  
+A conversational AI chatbot that naturally collects insurance information from customers through intelligent chat interactions, replacing traditional forms with human-like conversations.
+
+---
+
+### **2. Problem Statement**
+
+**Current Pain Points:**
+- Insurance forms are boring and have high abandonment rates
+- Customers don't complete lengthy questionnaires
+- Manual data collection is time-consuming for agents
+- Traditional forms don't adapt to customer responses
+
+**Target Users:**
+- **Primary:** Insurance customers seeking quotes
+- **Secondary:** Insurance agents/companies collecting customer data
+
+---
+
+### **3. Phase 1 Scope & Goals**
+
+### **In Scope:**
+✅ **AI-powered chat interface** for customer interaction  
+✅ **Natural conversation flow** for insurance data collection  
+✅ **ChatGPT API integration** for intelligent responses  
+✅ **Serverless architecture** (no server management)  
+✅ **Mobile-responsive web interface**  
+✅ **Data extraction and validation** from natural language  
+✅ **Progress tracking** and conversation state management  
+
+### **Out of Scope (Future Phases):**
+❌ WhatsApp integration  
+❌ Admin portal for question management  
+❌ Database storage (using local storage for Phase 1)  
+❌ Quote generation or insurance calculations  
+❌ User authentication/accounts  
+❌ Multi-language support  
+
+---
+
+### **4. Core Features**
+
+### **4.1 Conversational AI Interface**
+- **Natural Language Processing:** Uses ChatGPT API to understand varied customer responses
+- **Smart Question Sequencing:** Intelligently determines next question based on previous answers
+- **Context Awareness:** Remembers conversation history and personalizes interactions
+- **Clarification Handling:** Asks follow-up questions when responses are unclear
+
+### **4.2 Insurance Data Collection**
+**Categories of Information:**
+1. **Personal Information**
+   - Full name
+   - Date of birth/age
+   - Phone number
+   - Email address
+
+2. **Financial Information**
+   - Annual household income
+   - Monthly premium budget
+   - Employment status
+
+3. **Medical Information**
+   - Tobacco usage
+   - Chronic health conditions
+   - Medications
+
+### **4.3 Smart Data Extraction**
+- **Flexible Input Handling:** Accepts various formats (e.g., "March 1985", "35 years old", "$75k/year")
+- **Data Validation:** Ensures collected information meets required formats
+- **Confidence Scoring:** AI assigns confidence levels to extracted data
+- **Auto-formatting:** Standardizes data format (phone numbers, dates, currency)
+
+### **4.4 User Experience Features**
+- **Progress Indicator:** Shows completion percentage
+- **Typing Indicators:** Realistic chat experience with typing animations
+- **Quick Replies:** Pre-built responses for yes/no questions
+- **Mobile-First Design:** Optimized for mobile devices
+- **Conversation Summary:** Shows collected information before completion
+
+---
+
+### **5. Technical Architecture**
+
+### **5.1 Frontend (React)**
+```
+Technology Stack:
+- React 18+ with hooks
+- Tailwind CSS for styling
+- shadcn/ui component library
+- Responsive design (mobile-first)
+```
+
+### **5.2 Backend (Serverless)**
+```
+Serverless Functions:
+- Vercel Functions or Netlify Functions
+- ChatGPT API integration (OpenAI API)
+- No persistent server infrastructure
+```
+
+### **5.3 Data Storage (Phase 1)**
+```
+Temporary Storage:
+- Browser localStorage for session data
+- No persistent database (Phase 2 requirement)
+- Data export functionality for testing
+```
+
+### **5.4 AI Integration**
+```
+ChatGPT API Configuration:
+- Model: GPT-4 or GPT-3.5-turbo
+- Temperature: 0.3-0.7 (balanced creativity/consistency)
+- Max tokens: 500-1000 per response
+- System prompts for insurance context
+```
+
+---
+
+### **6. User Stories**
+
+### **6.1 Primary User Flow**
+```
+As a customer seeking insurance quotes,
+I want to have a natural conversation about my needs,
+So that I can provide information without filling boring forms.
+```
+
+**Acceptance Criteria:**
+- Conversation feels natural and human-like
+- Can input information in my own words
+- System understands various formats and phrases
+- Progress is clear and motivating
+- Can complete on mobile device easily
+
+### **6.2 Data Collection Flow**
+```
+As the AI system,
+I need to collect complete insurance information,
+So that agents can generate accurate quotes.
+```
+
+**Acceptance Criteria:**
+- All required fields are collected
+- Data is validated and formatted correctly
+- Handles incomplete or unclear responses
+- Maintains conversation context throughout
+- Provides confirmation of collected information
+
+---
+
+### **7. Success Metrics**
+
+### **7.1 Primary KPIs**
+- **Completion Rate:** >80% of users complete the full conversation
+- **Data Quality:** >95% of extracted data is correctly formatted
+- **User Satisfaction:** Subjective feedback on conversation experience
+- **Response Time:** <2 seconds average AI response time
+
+### **7.2 Technical Metrics**
+- **API Uptime:** >99.5% availability
+- **Error Rate:** <2% of conversations encounter technical errors
+- **Mobile Compatibility:** Works on iOS Safari, Android Chrome
+- **Load Time:** Initial page load <3 seconds
+
+---
+
+### **8. Technical Requirements**
+
+### **8.1 Performance**
+- **Response Time:** AI responses within 1-3 seconds
+- **Concurrent Users:** Support 50+ simultaneous conversations
+- **Mobile Performance:** Smooth scrolling and input handling
+- **Offline Handling:** Graceful degradation when connectivity is poor
+
+### **8.2 Security & Privacy**
+- **API Key Security:** ChatGPT API keys stored securely in environment variables
+- **Data Privacy:** Clear disclosure of data collection practices
+- **Input Sanitization:** Prevent malicious input injection
+- **HTTPS Only:** All communications encrypted
+
+### **8.3 Browser Compatibility**
+- **Modern Browsers:** Chrome 90+, Safari 14+, Firefox 88+, Edge 90+
+- **Mobile Browsers:** iOS Safari, Android Chrome
+- **Progressive Enhancement:** Basic functionality without JavaScript
+
+---
+
+### **9. Design Requirements**
+
+### **9.1 Visual Design**
+- **Brand Colors:** Professional blue/white color scheme
+- **Typography:** Clean, readable fonts (system fonts)
+- **Icons:** Consistent icon library (Lucide React)
+- **Spacing:** Generous whitespace for mobile readability
+
+### **9.2 Interaction Design**
+- **Chat Bubbles:** Familiar messaging app interface
+- **Animations:** Subtle transitions and typing indicators
+- **Feedback:** Clear success/error states
+- **Accessibility:** WCAG 2.1 AA compliance
+
+---
+
+### **10. Development Timeline**
+
+### **Week 1-2: Foundation**
+- Set up React application with Tailwind
+- Implement basic chat interface
+- Create conversation flow structure
+- Set up serverless function framework
+
+### **Week 3-4: AI Integration**
+- Integrate ChatGPT API
+- Implement data extraction logic
+- Build conversation state management
+- Add input validation and formatting
+
+### **Week 5-6: Polish & Testing**
+- Mobile optimization and testing
+- Error handling and edge cases
+- Performance optimization
+- User testing and feedback incorporation
+
+---
+
+### **11. Risk Assessment**
+
+### **High Risk:**
+- **ChatGPT API Rate Limits:** Could limit concurrent users
+- **AI Response Quality:** May not always understand customer input correctly
+- **Mobile Performance:** Complex state management could impact performance
+
+### **Medium Risk:**
+- **Data Privacy Concerns:** Customers may be hesitant to share personal information
+- **Browser Compatibility:** Older browsers might not support all features
+
+### **Mitigation Strategies:**
+- Implement API rate limiting and queuing
+- Extensive testing with various input formats
+- Progressive enhancement for older browsers
+- Clear privacy messaging and data handling
+
+---
+
+### **12. Success Criteria for Phase 1**
+
+### **MVP Definition:**
+A working AI chatbot that can:
+1. Conduct natural conversations about insurance needs
+2. Extract and validate customer information accurately
+3. Provide smooth mobile experience
+4. Handle common edge cases and errors
+5. Complete data collection in <10 minutes average
+
+### **Phase 1 Complete When:**
+- ✅ 20+ test conversations completed successfully
+- ✅ Mobile experience tested on iOS and Android
+- ✅ AI correctly extracts data from 95%+ of test inputs
+- ✅ Error handling covers common failure scenarios
+- ✅ Performance meets specified metrics
+
+---
+
+### **13. Future Considerations (Phase 2+)**
+
+**Immediate Next Phase:**
+- Database integration for persistent storage
+- Admin portal for question management
+- WhatsApp Business API integration
+- Analytics and conversation insights
+
+**Long-term Roadmap:**
+- Multi-language support
+- Integration with insurance quote engines
+- Advanced conversation analytics
+- Voice input capabilities
+
+---
+
+**Document Version:** 1.0  
+**Last Updated:** January 28, 2025  
+**Next Review:** After Phase 1 completion 

@@ -1,0 +1,99 @@
+Project Requirements Document (PRD) - Example
+==============================================
+
+Project Name: Fact Finding Application
+Version: 1.0
+Date: 2025-01-28
+
+## Project Overview
+
+### Goal
+Build a comprehensive web application that helps users research, verify, and track facts across various topics and sources.
+
+### Problem Statement
+In today's information-rich environment, it's challenging for users to:
+- Verify the accuracy of information they encounter
+- Track sources and credibility
+- Collaborate on fact-checking efforts
+- Maintain a reliable knowledge base
+
+### Target Audience
+- Researchers and journalists
+- Students and academics
+- General public interested in fact verification
+- Organizations needing reliable information tracking
+
+## Core Features
+
+### 1. User Management
+- User registration and authentication
+- User profiles with expertise areas
+- Role-based access (admin, moderator, user)
+- User reputation system
+
+### 2. Fact Submission & Management
+- Submit facts with sources
+- Categorize facts by topic/domain
+- Add supporting evidence and documentation
+- Edit and update existing facts
+
+### 3. Verification System
+- Peer review process
+- Source credibility scoring
+- Evidence evaluation
+- Consensus tracking
+
+### 4. Search & Discovery
+- Advanced search functionality
+- Filter by category, credibility, date
+- Related facts suggestions
+- Trending topics
+
+### 5. Rating & Feedback
+- Fact accuracy ratings
+- Source reliability ratings
+- User feedback and comments
+- Dispute resolution system
+
+### 6. Analytics & Reporting
+- Fact verification statistics
+- Source reliability trends
+- User contribution metrics
+- System health monitoring
+
+## Technical Requirements
+
+### Frontend
+- Modern, responsive web interface
+- Mobile-friendly design
+- Real-time updates
+- Accessibility compliance
+
+### Backend
+- RESTful API architecture
+- User authentication & authorization
+- Database for facts, users, and metadata
+- Search engine integration
+
+### Infrastructure
+- Cloud hosting
+- Scalable architecture
+- Data backup and recovery
+- Security measures
+
+## Success Metrics
+- Number of verified facts
+- User engagement rates
+- Source credibility improvements
+- Community growth
+
+## Timeline
+- Phase 1: Core functionality (8 weeks)
+- Phase 2: Advanced features (6 weeks)
+- Phase 3: Analytics & optimization (4 weeks)
+
+## Constraints
+- Budget: TBD
+- Team size: Small development team
+- Technology stack: Modern web technologies
+- Compliance: Data privacy regulations
