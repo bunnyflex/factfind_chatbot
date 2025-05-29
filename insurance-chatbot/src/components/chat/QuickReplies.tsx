@@ -121,6 +121,12 @@ export const QUICK_REPLIES = {
     { text: "Vaper", value: "I vape but don't smoke cigarettes", icon: "💨" },
   ],
 
+  // Simple yes/no for basic smoking questions
+  smokingYesNo: [
+    { text: "Yes, I smoke", value: "Yes, I smoke", icon: "🚬" },
+    { text: "No, I don't smoke", value: "No, I don't smoke", icon: "🚭" },
+  ],
+
   healthConditions: [
     {
       text: "No health issues",
@@ -252,16 +258,35 @@ export function getQuickRepliesForMessage(message: string): QuickReply[] {
     return QUICK_REPLIES.ukResident;
   }
 
-  // Employment - Check this BEFORE marital status to avoid conflicts
+  // Smoking - Check this FIRST to avoid conflicts with other keywords
   if (
-    lowerMessage.includes("employment") ||
-    lowerMessage.includes("work") ||
-    lowerMessage.includes("job") ||
-    lowerMessage.includes("employed") ||
-    lowerMessage.includes("self-employed") ||
-    lowerMessage.includes("work situation") ||
-    lowerMessage.includes("looking for work") ||
-    lowerMessage.includes("currently employed")
+    lowerMessage.includes("smoke") ||
+    lowerMessage.includes("smoking") ||
+    lowerMessage.includes("tobacco")
+  ) {
+    // If it's a simple "do you smoke" question, use yes/no
+    if (
+      lowerMessage.includes("do you smoke") ||
+      lowerMessage.includes("smoke at all") ||
+      (lowerMessage.includes("smoke") && !lowerMessage.includes("status"))
+    ) {
+      return QUICK_REPLIES.smokingYesNo;
+    }
+    // For detailed smoking status questions
+    return QUICK_REPLIES.smokingStatus;
+  }
+
+  // Employment - Make this more specific to avoid conflicts
+  if (
+    (lowerMessage.includes("employment") && !lowerMessage.includes("smoke")) ||
+    (lowerMessage.includes("work") && !lowerMessage.includes("smoke")) ||
+    (lowerMessage.includes("job") && !lowerMessage.includes("smoke")) ||
+    (lowerMessage.includes("work situation") &&
+      !lowerMessage.includes("smoke")) ||
+    (lowerMessage.includes("looking for work") &&
+      !lowerMessage.includes("smoke")) ||
+    (lowerMessage.includes("currently employed") &&
+      !lowerMessage.includes("smoke"))
   ) {
     return QUICK_REPLIES.employmentStatus;
   }
@@ -286,15 +311,6 @@ export function getQuickRepliesForMessage(message: string): QuickReply[] {
     (lowerMessage.includes("single") && !lowerMessage.includes("work"))
   ) {
     return QUICK_REPLIES.maritalStatus;
-  }
-
-  // Smoking
-  if (
-    lowerMessage.includes("smoke") ||
-    lowerMessage.includes("smoking") ||
-    lowerMessage.includes("tobacco")
-  ) {
-    return QUICK_REPLIES.smokingStatus;
   }
 
   // Health
