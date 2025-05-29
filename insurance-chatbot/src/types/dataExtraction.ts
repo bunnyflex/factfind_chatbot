@@ -40,6 +40,7 @@ export interface ExtractionContext {
   currentQuestion: string;
   previousAnswers: Record<string, any>;
   conversationHistory: string[];
+  lastAssistantMessage?: string;
 }
 
 export interface SmartExtractionResult {

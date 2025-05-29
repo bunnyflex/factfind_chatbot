@@ -400,14 +400,28 @@ export class DataExtractionService {
     // **NEW: Context-aware extraction for indirect answers**
     // If someone answers with marital status when asked about dependents,
     // we should also try to extract dependents information
-    const lastAssistantMessage =
-      context.conversationHistory?.slice(-2, -1)[0] || "";
+    const lastAssistantMessage = context.lastAssistantMessage || "";
+
+    console.log("Context-aware extraction debug:", {
+      lastAssistantMessage,
+      cleanMessage,
+      isDependentsQuestion: /\b(dependents|children|kids)\b/i.test(
+        lastAssistantMessage
+      ),
+      isMaritalAnswer: /\b(single|married|divorced|widowed|separated)\b/i.test(
+        cleanMessage
+      ),
+    });
 
     // Check if the last question was about dependents but user answered with marital status
     if (
       /\b(dependents|children|kids)\b/i.test(lastAssistantMessage) &&
       /\b(single|married|divorced|widowed|separated)\b/i.test(cleanMessage)
     ) {
+      console.log(
+        "Detected marital status answer to dependents question - adding dependents mapping"
+      );
+
       // Add dependents mapping since they're answering a dependents question
       const dependentsMapping = questionFieldMappings.find(
         (m) => m.dataField === "hasDependents"
@@ -417,6 +431,7 @@ export class DataExtractionService {
         !relevantMappings.some((m) => m.dataField === "hasDependents")
       ) {
         relevantMappings.push(dependentsMapping);
+        console.log("Added hasDependents mapping to relevant mappings");
       }
 
       // For single people, we can reasonably infer they likely don't have dependents

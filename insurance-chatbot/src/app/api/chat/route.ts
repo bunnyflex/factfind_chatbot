@@ -104,8 +104,12 @@ export async function POST(request: NextRequest) {
           previousAnswers: body.conversationState?.collectedData || {},
           conversationHistory:
             body.conversationState?.messages?.map(
-              (m: { content: string }) => m.content
+              (m: { role: string; content: string }) => m.content
             ) || [],
+          lastAssistantMessage:
+            body.conversationState?.messages
+              ?.filter((m: { role: string }) => m.role === "assistant")
+              ?.slice(-1)[0]?.content || "",
         }
       );
 
